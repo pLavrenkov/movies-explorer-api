@@ -76,9 +76,18 @@ module.exports.login = (req, res, next) => {
 
 module.exports.updateUser = (req, res, next) => {
   const { email, name } = req.body;
-  User.findByIdAndUpdate(req.user._id, { email, name }, { new: true, runValidators: true })
-    .then((user) => res.send(user))
-    .catch((err) => handleValidationError(err, next));
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
+        const error = new ConflictError('пользователь с таким email уже существует');
+        next(error);
+      } else {
+        User.findByIdAndUpdate(req.user._id, { email, name }, { new: true, runValidators: true })
+          .then((currentUser) => res.send(currentUser))
+          .catch((err) => handleValidationError(err, next));
+      }
+    })
+    .catch(next);
 };
 
 module.exports.logout = (req, res, next) => {
@@ -88,5 +97,9 @@ module.exports.logout = (req, res, next) => {
     next(err);
     return;
   }
-  res.clearCookie('jwt').status(200).send({ message: 'пользователь вышел' });
+  try {
+    res.clearCookie('jwt').status(200).send({ message: `пользователь ID: ${req.user._id}, вышел` });
+  } catch (error) {
+    next(error);
+  }
 };

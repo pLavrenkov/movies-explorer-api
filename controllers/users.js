@@ -9,11 +9,12 @@ const NotFoundError = require('../errors/NotFoundError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 const { JWT_CODE, COOKIES_SECURE } = require('../utils/constants');
 const { handleValidationError } = require('../utils/utils');
+const { errorMessages } = require('../utils/constants');
 
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail(new NotFoundError('пользователь не найден или удален'))
-    .then((user) => res.send(user))
+    .orFail(new NotFoundError(errorMessages.userBadRequest))
+    .then((user) => res.send({ email: user.email, name: user.name }))
     .catch((err) => handleValidationError(err, next));
 };
 
@@ -22,7 +23,7 @@ module.exports.createUser = (req, res, next) => {
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        const error = new ConflictError('пользователь с таким email уже существует');
+        const error = new ConflictError(errorMessages.userExisted);
         next(error);
         return;
       }
@@ -44,13 +45,13 @@ module.exports.createUser = (req, res, next) => {
 module.exports.login = (req, res, next) => {
   const { password } = req.body;
   if (!req.body.email || !req.body.password) {
-    const error = new BadRequestError('не заполнены email или пароль');
+    const error = new BadRequestError(errorMessages.userBadRequest);
     next(error);
     return;
   }
   const email = req.body.email.toLowerCase();
   if (!validator.isEmail(email)) {
-    const error = new BadRequestError('email введен некорректно');
+    const error = new BadRequestError(errorMessages.userEmailBadRequest);
     next(error);
     return;
   }
@@ -79,7 +80,7 @@ module.exports.updateUser = (req, res, next) => {
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        const error = new ConflictError('пользователь с таким email уже существует');
+        const error = new ConflictError(errorMessages.userExisted);
         next(error);
       } else {
         User.findByIdAndUpdate(req.user._id, { email, name }, { new: true, runValidators: true })
@@ -93,7 +94,7 @@ module.exports.updateUser = (req, res, next) => {
 module.exports.logout = (req, res, next) => {
   const { cookies } = req;
   if (!cookies || !cookies.jwt) {
-    const err = new UnauthorizedError('необходимо залогиниться');
+    const err = new UnauthorizedError(errorMessages.userLoggin);
     next(err);
     return;
   }

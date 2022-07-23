@@ -18,6 +18,10 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: [true, 'не указан год выпуска фильма'],
   },
+  description: {
+    type: String,
+    required: [true, 'отсутствует описание фильма'],
+  },
   image: {
     type: String,
     required: [true, 'не указан постер к фильму'],

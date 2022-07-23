@@ -1,5 +1,6 @@
 const BadRequestError = require('../errors/BadRequestError');
 const InternalServerError = require('../errors/InternalServerError');
+const { errorMessages } = require('./constants');
 
 module.exports.handleError = (err, req, res, next) => {
   if (!err.statusCode) {
@@ -11,13 +12,13 @@ module.exports.handleError = (err, req, res, next) => {
 
 module.exports.handleValidationError = (err, next) => {
   if (err.name === 'ValidationError') {
-    const error = new BadRequestError('некорректный запрос');
+    const error = new BadRequestError(errorMessages.badRequest);
     next(error);
   } else if (err.name === 'CastError') {
-    const error = new BadRequestError('данные не найдены');
+    const error = new BadRequestError(errorMessages.notFound);
     next(error);
   } else if (err.statusCode === 400) {
-    const error = new BadRequestError('некорректный запрос');
+    const error = new BadRequestError(errorMessages.badRequest);
     next(error);
   } else {
     next(err);

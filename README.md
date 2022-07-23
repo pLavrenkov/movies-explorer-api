@@ -4,7 +4,7 @@
   
 Адрес сайта в на Яндекс.Облако:
 
-адрес сервера [api.movies.plavrenkov.nomoredomains.sbs](https://api.movies.plavrenkov.nomoredomains.xyz/)
+адрес сервера [api.movies.plavrenkov.nomoredomains.xyz](https://api.movies.plavrenkov.nomoredomains.xyz/)
 
 подключение через `https:\`
 

@@ -3,10 +3,10 @@ const allowedCors = [
   'http://praktikum.tk',
   'localhost:3000',
   'localhost:3001',
-  'http://mesto.plavrenkov.nomoredomains.sbs',
-  'https://mesto.plavrenkov.nomoredomains.sbs',
-  'http://api.mesto.plavrenkov.nomoredomains.sbs',
-  'https://api.mesto.plavrenkov.nomoredomains.sbs',
+  'http://movies.plavrenkov.nomoredomains.xyz',
+  'https://movies.plavrenkov.nomoredomains.xyz',
+  'http://api.movies.plavrenkov.nomoredomains.xyz',
+  'https://api.movies.plavrenkov.nomoredomains.xyz',
 ];
 
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';

@@ -9,7 +9,7 @@ const {
 } = process.env;
 
 module.exports.JWT_CODE = NODE_ENV === 'production' ? JWT_SECRET : 'jwt_dev_13';
-module.exports.dataBasePath = DB_PATH;
+module.exports.dataBasePath = NODE_ENV === 'production' ? DB_PATH : 'mongodb://localhost:27017/moviesdb';
 module.exports.PORT = PORT;
 module.exports.COOKIES_SECURE = NODE_ENV === 'production';
 

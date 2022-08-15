@@ -58,7 +58,7 @@ const movieSchema = new mongoose.Schema({
     required: [true, 'отсутствует id пользователя, сохранившего фильм'],
   },
   movieId: {
-    type: String,
+    type: Number,
     required: [true, 'отсутствует id фильма на сервисе MoviesExplorer'],
   },
   nameRU: {

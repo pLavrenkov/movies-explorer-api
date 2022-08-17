@@ -79,11 +79,11 @@ module.exports.updateUser = (req, res, next) => {
   const { email, name } = req.body;
   User.findOne({ email })
     .then((user) => {
-      if (user) {
+      if (user._id === req.user._id) {
         const error = new ConflictError(errorMessages.userExisted);
         next(error);
       } else {
-        User.findByIdAndUpdate(req.user._id, { email, name }, { new: true, runValidators: false })
+        User.findByIdAndUpdate(req.user._id, { email, name }, { new: true, runValidators: true })
           .then((currentUser) => res.send(currentUser))
           .catch((err) => handleValidationError(err, next));
       }

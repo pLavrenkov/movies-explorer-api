@@ -1,7 +1,6 @@
 const allowedCors = [
   'https://praktikum.tk',
   'http://praktikum.tk',
-  'http://localhost:3000',
   'localhost:3000',
   'localhost:3001',
   'http://movies.plavrenkov.nomoredomains.xyz',

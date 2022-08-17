@@ -79,7 +79,7 @@ module.exports.updateUser = (req, res, next) => {
   const { email, name } = req.body;
   User.findOne({ email })
     .then((user) => {
-      if (user._id === req.user._id) {
+      if (user && (user._id === req.user._id)) {
         const error = new ConflictError(errorMessages.userExisted);
         next(error);
       } else {

@@ -30,11 +30,20 @@ module.exports.createUser = (req, res, next) => {
       bcrypt.hash(password, 10)
         .then((hash) => {
           User.create({ email, password: hash, name })
-            .then((newUser) => res.status(201).send({
-              _id: newUser._id,
-              email: newUser.email,
-              name: newUser.name,
-            }))
+            .then((newUser) => {
+              const token = jwt.sign({ _id: user._id }, JWT_CODE, { expiresIn: '7d' });
+              res.cookie('jwt', token, {
+                maxAge: 3600000 * 24 * 7,
+                httpOnly: true,
+                sameSite: 'None',
+                secure: COOKIES_SECURE,
+              })
+                .status(201).send({
+                  _id: newUser._id,
+                  email: newUser.email,
+                  name: newUser.name,
+                });
+            })
             .catch((err) => handleValidationError(err, next));
         })
         .catch(next);

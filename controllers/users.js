@@ -31,7 +31,7 @@ module.exports.createUser = (req, res, next) => {
         .then((hash) => {
           User.create({ email, password: hash, name })
             .then((newUser) => {
-              const token = jwt.sign({ _id: user._id }, JWT_CODE, { expiresIn: '7d' });
+              const token = jwt.sign({ _id: newUser._id }, JWT_CODE, { expiresIn: '7d' });
               res.cookie('jwt', token, {
                 maxAge: 3600000 * 24 * 7,
                 httpOnly: true,
